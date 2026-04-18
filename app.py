@@ -5,6 +5,10 @@ import tempfile
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from dotenv import load_dotenv
 
+# Ensure the root directory is in the Python path so Streamlit Cloud can find 'agent'
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from agent.graph import build_graph
 from agent.rag import setup_rag_pipeline
 from agent import retriever_store
