@@ -1,24 +1,6 @@
-# Environment
-.env
-venv/
+```
 __pycache__/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-Thumbs.db
-.DS_Store
-
-# ChromaDB ephemeral data
-chroma_data/
-
-# Byte-compiled
 *.pyc
 *.pyo
-
-# Distribution
-*.egg-info/
-dist/
-build/
+*.pyd
+```
