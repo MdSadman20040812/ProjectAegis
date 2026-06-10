@@ -1,147 +1,151 @@
-# AEGIS ⚡ — Cognitive Tutor
+# AEGIS 🛡️ — Cognitive Tutor System
 
-> **System-Directed Academic Breakdown Engine**
-> Upload any academic document. Ask any question. AEGIS deconstructs it into first principles.
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+[![Python: 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+[![UI: Streamlit](https://img.shields.io/badge/UI-Streamlit-red.svg)](https://streamlit.io/)
+[![Framework: LangGraph](https://img.shields.io/badge/Framework-LangGraph-emerald.svg)](https://github.com/langchain-ai/langgraph)
+[![Provider: Cerebras](https://img.shields.io/badge/Provider-Cerebras-orange.svg)](https://cerebras.ai/)
 
----
-
-## What Is AEGIS?
-
-AEGIS is an **Agentic RAG (Retrieval-Augmented Generation) system** built on LangGraph and Streamlit. It accepts complex academic source material (PDFs, lecture notes) and answers questions by breaking concepts down through a four-phase reasoning framework:
-
-| Phase | Description |
-|---|---|
-| **A — Axiomatic Reduction** | Identifies absolute foundational truths from the document |
-| **B — Reassembly** | Rebuilds the concept step-by-step (A → B → C) |
-| **C — Simpler Terms** | Provides a universal 1:1 analogy |
-| **D — Verification** | Asks a targeted question to confirm understanding |
+**AEGIS** is a premium, hardware-accelerated **Agentic RAG (Retrieval-Augmented Generation)** deconstruction system. It leverages a stateful multi-agent LangGraph network and the lightning-fast **Cerebras Inference API** to ingest academic documents or corporate manuals and systematically break them down into first principles.
 
 ---
 
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| **Agentic Framework** | LangGraph (StateGraph + MemorySaver) |
-| **LLM Provider** | Cerebras Inference (ultra-fast, dedicated hardware) |
-| **Embeddings** | HuggingFace `all-MiniLM-L6-v2` (local, no API cost) |
-| **Vector Store** | ChromaDB (in-memory, per-session) |
-| **UI** | Streamlit (premium dark glassmorphism theme) |
-| **Document Loaders** | PyPDF + LangChain TextLoader |
+## 📖 Table of Contents
+1. [Core Features](#-core-features)
+2. [The ABCD Deconstruction Framework](#-the-abcd-deconstruction-framework)
+3. [Architecture Overview](#-architecture-overview)
+4. [Tech Stack Details](#-tech-stack-details)
+5. [Interactive Installation & Setup](#-interactive-installation--setup)
+6. [Usage Guide](#-usage-guide)
+7. [License](#-license)
 
 ---
 
-## Setup
+## ✨ Core Features
 
-### 1. Prerequisites
-- Python 3.10+
-- A [Cerebras](https://cerebras.ai) API key
+*   **⚡ Ultra-Fast Deductive Reasoning**: Sub-second LLM processing utilizing Cerebras hardware.
+*   **📂 Vector Space Ingestion**: Local `all-MiniLM-L6-v2` embeddings combined with instant memory ChromaDB.
+*   **🎚️ Dynamic Jargon Scaling**: Shift explainers from high-level mathematical abstractions to analogies on the fly.
+*   **🔒 Secure Sandbox Operation**: Disables right-clicks and developer inspector console to safeguard core logic.
 
-### 2. Clone & Install
+---
 
-```bash
-git clone <your-repo-url>
-cd Chatbot
+## 🌀 The ABCD Deconstruction Framework
 
-# Create and activate virtual environment
-python -m venv venv
-venv\Scripts\activate      # Windows
-# source venv/bin/activate  # macOS/Linux
+Every concept queried is decomposed through our proprietary four-tiered cognitive deconstruction pipeline:
 
-# Install dependencies
-pip install -r requirements.txt
+| Phase | Designation | Methodology |
+| :--- | :--- | :--- |
+| **A** | **Axiomatic Reduction** | Extracts absolute foundational truths, removing structural dependencies. |
+| **B** | **Reassembly** | Synthesizes details sequentially from foundational truths to complex targets. |
+| **C** | **Simpler Terms** | Invents a vivid, relatable 1:1 real-world analogy. |
+| **D** | **Verification Check** | Posits a targeted question to confirm complete comprehension. |
+
+---
+
+## 📐 Architecture Overview
+
+```mermaid
+graph TD
+    User([User Prompt]) -->|Streamlit UI| App[app.py]
+    App -->|Upload Document| RAG[agent/rag.py - Ingest & Chunk]
+    RAG -->|MiniLM Embeddings| VectorStore[(ChromaDB Vector Store)]
+    App -->|Query| Graph[agent/graph.py - LangGraph Node Router]
+    Graph -->|Similarity Search| VectorStore
+    Graph -->|Cognitive Synthesis Node| Cerebras[Cerebras Inference Node]
+    Cerebras -->|1. llama3.1-8b <br> 2. qwen-2.5-72b <br> 3. gpt-oss-120b| LLMResponse[Multi-Model Fallback Chain]
+    LLMResponse -->|Output Message| User
 ```
 
-### 3. Configure Environment
+---
 
-Copy `.env.example` to `.env` and fill in your key:
+## 🛠️ Tech Stack Details
 
+*   **Orchestrator**: LangGraph (StateGraph runtime with thread-specific state retention).
+*   **LLM Platform**: Cerebras Inference (dedicated hardware for zero-latency streaming).
+*   **Embeddings**: HuggingFace `sentence-transformers/all-MiniLM-L6-v2` (run locally).
+*   **Vector Database**: ChromaDB (in-memory per-thread collection).
+*   **User Interface**: Streamlit (Glassmorphism dark theme).
+
+---
+
+## 🚀 Interactive Installation & Setup
+
+Follow these interactive steps to configure and launch AEGIS locally.
+
+<details>
+<summary>📋 Step 1: Clone the Repository</summary>
+
+```bash
+git clone https://github.com/MdSadman20040812/ProjectAegis.git
+cd ProjectAegis
+```
+</details>
+
+<details>
+<summary>🐍 Step 2: Establish Virtual Environment</summary>
+
+```bash
+# Create environment
+python -m venv venv
+
+# Activate (Windows PowerShell)
+.\venv\Scripts\Activate.ps1
+
+# Activate (macOS/Linux)
+source venv/bin/activate
+```
+</details>
+
+<details>
+<summary>📦 Step 3: Install Dependencies</summary>
+
+```bash
+pip install -r requirements.txt
+```
+</details>
+
+<details>
+<summary>🔑 Step 4: Add API Credentials</summary>
+
+Copy the template `.env.example` to `.env` and insert your API credentials:
 ```bash
 copy .env.example .env
 ```
-
 Edit `.env`:
-```
+```ini
 CEREBRAS_API_KEY=your_cerebras_api_key_here
 ```
+*(Get a key from [Cerebras Console](https://cerebras.ai))*
+</details>
 
-Get your API key at: https://cerebras.ai
+<details>
+<summary>⚡ Step 5: Start the Tutor App</summary>
 
----
-
-## Running AEGIS
-
-**Option A — Double-click launcher (Windows):**
-```
-run.bat
-```
-
-**Option B — Manual:**
+For Windows users, double-click:
 ```bash
-venv\Scripts\activate
+.\run.bat
+```
+Or execute manually:
+```bash
 streamlit run app.py
 ```
-
-Then open your browser to: **http://localhost:8501**
-
----
-
-## How to Use
-
-1. **Launch** AEGIS via `run.bat` or the CLI command above
-2. **Upload** your document (PDF or TXT) using the sidebar panel
-3. **Ask** any question about the content in the chat input
-4. **Adjust difficulty** on the fly:
-   - Say `"simplify this"` or `"explain like I'm 5"` → removes jargon
-   - Say `"go deeper"` or `"more technical"` → introduces formal math/nomenclature
-5. **New Session** — click the reset button in the sidebar to start fresh
-6. AEGIS will answer using only the uploaded document as context
+Open **`http://localhost:8501`** in your browser.
+</details>
 
 ---
 
-## Architecture
+## 🖥️ Usage Guide
 
-```
-app.py (Streamlit UI — premium dark glassmorphism theme)
-│
-├── agent/
-│   ├── graph.py   — LangGraph StateGraph: conditional routing between init & query nodes
-│   ├── nodes.py   — init_node (greeting) + process_query_node (RAG + Cerebras LLM reasoning)
-│   ├── state.py   — AegisState TypedDict (messages, retriever, difficulty, etc.)
-│   └── rag.py     — Document loader → chunker → HuggingFace embeddings → Chroma retriever
-│
-└── .env           — CEREBRAS_API_KEY
-```
-
-### LLM Fallback Chain (Cerebras Inference)
-If any model returns an error, AEGIS automatically retries the next model:
-
-1. `llama3.1-8b` (primary — fast)
-2. `qwen-3-235b-a22b-instruct-2507`
-3. `gpt-oss-120b`
+1.  **Ingest Content**: Upload any PDF or TXT paper in the left sidebar.
+2.  **Submit Query**: Ask a question about any formula, system design, or concept in the document.
+3.  **Command Jargon Shifts**:
+    *   *Need it simplified?* Type `explain like I'm 5` or `simplify this`.
+    *   *Need technical depth?* Type `go deeper` or `more technical details`.
+4.  **Interactive Quiz**: Complete Phase D verification questions to lock in the knowledge.
 
 ---
 
-## Project Structure
+## 📄 License
 
-```
-Chatbot/
-├── agent/
-│   ├── __init__.py
-│   ├── graph.py
-│   ├── nodes.py
-│   ├── rag.py
-│   └── state.py
-├── .env               ← your API key (not committed)
-├── .env.example       ← template
-├── app.py             ← Streamlit entry point
-├── requirements.txt
-├── run.bat            ← Windows one-click launcher
-└── README.md
-```
-
----
-
-## License
-
-MIT — Built with LangGraph + Cerebras Inference.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

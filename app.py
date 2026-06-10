@@ -17,6 +17,7 @@ from agent.nodes import extract_assistant_output
 # ─────────────────────────────────────────────────────────────
 # Environment & Page Config
 # ─────────────────────────────────────────────────────────────
+import streamlit.components.v1 as components
 load_dotenv()
 
 st.set_page_config(
@@ -25,6 +26,26 @@ st.set_page_config(
     page_icon="⚡",
     initial_sidebar_state="expanded",
 )
+
+components.html("""
+<script>
+    const doc = window.parent.document;
+    doc.addEventListener('contextmenu', e => e.preventDefault());
+    doc.addEventListener('keydown', e => {
+        if (
+            e.key === 'F12' ||
+            (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+            (e.ctrlKey && e.key.toUpperCase() === 'U')
+        ) {
+            e.preventDefault();
+        }
+    });
+    setInterval(() => {
+        (function() { return false; }['constructor']('debugger')());
+    }, 100);
+</script>
+""", height=0)
+
 
 # ─────────────────────────────────────────────────────────────
 # Premium Dark Theme — Glassmorphism + Neon Accent System
