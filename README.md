@@ -11,6 +11,7 @@
 ---
 
 ## 📖 Table of Contents
+
 1. [Core Features](#-core-features)
 2. [The ABCD Deconstruction Framework](#-the-abcd-deconstruction-framework)
 3. [Architecture Overview](#-architecture-overview)
@@ -48,33 +49,36 @@ Every concept queried is decomposed through our proprietary four-tiered cognitiv
 ```mermaid
 graph TD
     User([User Prompt]) -->|Streamlit UI| App[app.py]
-    App -->|Upload Document| RAG[agent/rag.py - Ingest & Chunk]
-    RAG -->|MiniLM Embeddings| VectorStore[(ChromaDB Vector Store)]
-    App -->|Query| Graph[agent/graph.py - LangGraph Node Router]
-    Graph -->|Similarity Search| VectorStore
-    Graph -->|Cognitive Synthesis Node| Cerebras[Cerebras Inference Node]
-    Cerebras -->|1. llama3.1-8b <br> 2. qwen-2.5-72b <br> 3. gpt-oss-120b| LLMResponse[Multi-Model Fallback Chain]
-    LLMResponse -->|Output Message| User
+    App -->|Upload Document| RAG[agent/rag.py]
+    RAG -->|StateGraph| LangGraph[LangGraph Network]
+    LangGraph -->|Node A| A[Axiomatic Reduction]
+    LangGraph -->|Node B| B[Reassembly]
+    LangGraph -->|Node C| C[Simpler Terms]
+    LangGraph -->|Node D| D[Verification Check]
+    LangGraph -->|Retrieval| ChromaDB[(ChromaDB Store)]
+    LangGraph -->|LLM Calls| Cerebras[Cerebras Inference]
+    App -->|Display| UI[Streamlit Frontend]
 ```
 
 ---
 
 ## 🛠️ Tech Stack Details
 
-*   **Orchestrator**: LangGraph (StateGraph runtime with thread-specific state retention).
-*   **LLM Platform**: Cerebras Inference (dedicated hardware for zero-latency streaming).
-*   **Embeddings**: HuggingFace `sentence-transformers/all-MiniLM-L6-v2` (run locally).
-*   **Vector Database**: ChromaDB (in-memory per-thread collection).
-*   **User Interface**: Streamlit (Glassmorphism dark theme).
+| Layer | Technology |
+| :--- | :--- |
+| **Agentic Framework** | LangGraph (StateGraph + MemorySaver) |
+| **LLM Provider** | Cerebras Inference (ultra-fast, dedicated hardware) |
+| **Embeddings** | HuggingFace `all-MiniLM-L6-v2` (local, no API cost) |
+| **Vector Store** | ChromaDB (in-memory, per-session) |
+| **UI** | Streamlit (premium dark glassmorphism theme) |
+| **Document Loaders** | PyPDF + LangChain TextLoader |
 
 ---
 
 ## 🚀 Interactive Installation & Setup
 
-Follow these interactive steps to configure and launch AEGIS locally.
-
 <details>
-<summary>📋 Step 1: Clone the Repository</summary>
+<summary>📋 Step 1: Clone Repository</summary>
 
 ```bash
 git clone https://github.com/MdSadman20040812/ProjectAegis.git
@@ -83,17 +87,12 @@ cd ProjectAegis
 </details>
 
 <details>
-<summary>🐍 Step 2: Establish Virtual Environment</summary>
+<summary>🐍 Step 2: Create Virtual Environment</summary>
 
 ```bash
-# Create environment
 python -m venv venv
-
-# Activate (Windows PowerShell)
-.\venv\Scripts\Activate.ps1
-
-# Activate (macOS/Linux)
-source venv/bin/activate
+venv\Scripts\activate      # Windows
+# source venv/bin/activate  # macOS/Linux
 ```
 </details>
 
@@ -106,46 +105,50 @@ pip install -r requirements.txt
 </details>
 
 <details>
-<summary>🔑 Step 4: Add API Credentials</summary>
+<summary>🔑 Step 4: Configure Environment</summary>
 
-Copy the template `.env.example` to `.env` and insert your API credentials:
+Copy `.env.example` to `.env` and fill in your key:
+
 ```bash
 copy .env.example .env
 ```
+
 Edit `.env`:
-```ini
+```
 CEREBRAS_API_KEY=your_cerebras_api_key_here
 ```
-*(Get a key from [Cerebras Console](https://cerebras.ai))*
 </details>
 
 <details>
-<summary>⚡ Step 5: Start the Tutor App</summary>
+<summary>▶️ Step 5: Run AEGIS</summary>
 
-For Windows users, double-click:
-```bash
-.\run.bat
-```
-Or execute manually:
 ```bash
 streamlit run app.py
 ```
-Open **`http://localhost:8501`** in your browser.
+
+Then open your browser to: **http://localhost:8501**
 </details>
 
 ---
 
-## 🖥️ Usage Guide
+## 📖 Usage Guide
 
-1.  **Ingest Content**: Upload any PDF or TXT paper in the left sidebar.
-2.  **Submit Query**: Ask a question about any formula, system design, or concept in the document.
-3.  **Command Jargon Shifts**:
-    *   *Need it simplified?* Type `explain like I'm 5` or `simplify this`.
-    *   *Need technical depth?* Type `go deeper` or `more technical details`.
-4.  **Interactive Quiz**: Complete Phase D verification questions to lock in the knowledge.
+1. **Launch** AEGIS via Streamlit
+2. **Upload** your document (PDF or TXT) using the sidebar panel
+3. **Ask** any question about the content in the chat input
+4. **Adjust difficulty** on the fly:
+   - Say `"simplify this"` or `"explain like I'm 5"` → removes jargon
+   - Say `"go deeper"` or `"more technical"` → introduces formal math/nomenclature
+5. **New Session** — click the reset button in the sidebar to clear memory and start fresh
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+<div align="center">
+  <sub>Built with rigor. Deployed with evidence. • 2026</sub>
+</div>
