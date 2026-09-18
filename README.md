@@ -1,154 +1,119 @@
-# AEGIS 🛡️ — Cognitive Tutor System
+![ProjectAegis overview](docs/media/overview.svg)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
-[![Python: 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
-[![UI: Streamlit](https://img.shields.io/badge/UI-Streamlit-red.svg)](https://streamlit.io/)
-[![Framework: LangGraph](https://img.shields.io/badge/Framework-LangGraph-emerald.svg)](https://github.com/langchain-ai/langgraph)
-[![Provider: Cerebras](https://img.shields.io/badge/Provider-Cerebras-orange.svg)](https://cerebras.ai/)
+# ProjectAegis
 
-**AEGIS** is a premium, hardware-accelerated **Agentic RAG (Retrieval-Augmented Generation)** deconstruction system. It leverages a stateful multi-agent LangGraph network and the lightning-fast **Cerebras Inference API** to ingest academic documents or corporate manuals and systematically break them down into first principles.
+**A document-centered cognitive tutor interface built with Streamlit.**
 
----
+AEGIS presents a chat workspace for uploading PDF/TXT source material, asking questions, and requesting simpler or deeper explanations. The public source contains the interface and its integration points for a graph-based retrieval and tutoring backend.
 
-## 📖 Table of Contents
+> **Checkout status:** `app.py` imports an `agent` package that is absent from the public repository tree. A clean checkout is therefore incomplete and cannot run the tutor end to end as published. Installing the listed dependencies does not restore those project modules.
 
-1. [Core Features](#-core-features)
-2. [The ABCD Deconstruction Framework](#-the-abcd-deconstruction-framework)
-3. [Architecture Overview](#-architecture-overview)
-4. [Tech Stack Details](#-tech-stack-details)
-5. [Interactive Installation & Setup](#-interactive-installation--setup)
-6. [Usage Guide](#-usage-guide)
-7. [License](#-license)
+[Interface flow](#interface-flow) · [Quickstart-and-current-blocker](#quickstart-and-current-blocker) · [Source map](#source-map) · [Limitations](#limitations)
 
----
+## What the interface contains
 
-## ✨ Core Features
+- PDF/TXT upload controls and a loaded-document indicator.
+- A per-session thread ID, chat history, and graph invocation hooks.
+- A “New Session” action that clears the listed Streamlit session-state fields.
+- Instructions for asking questions and requesting “simplify” or “go deeper.”
+- A styled Streamlit chat layout and a Windows launcher.
 
-*   **⚡ Ultra-Fast Deductive Reasoning**: Sub-second LLM processing utilizing Cerebras hardware.
-*   **📂 Vector Space Ingestion**: Local `all-MiniLM-L6-v2` embeddings combined with instant memory ChromaDB.
-*   **🎚️ Dynamic Jargon Scaling**: Shift explainers from high-level mathematical abstractions to analogies on the fly.
-*   **🔒 Secure Sandbox Operation**: Disables right-clicks and developer inspector console to safeguard core logic.
-
----
-
-## 🌀 The ABCD Deconstruction Framework
-
-Every concept queried is decomposed through our proprietary four-tiered cognitive deconstruction pipeline:
-
-| Phase | Designation | Methodology |
-| :--- | :--- | :--- |
-| **A** | **Axiomatic Reduction** | Extracts absolute foundational truths, removing structural dependencies. |
-| **B** | **Reassembly** | Synthesizes details sequentially from foundational truths to complex targets. |
-| **C** | **Simpler Terms** | Invents a vivid, relatable 1:1 real-world analogy. |
-| **D** | **Verification Check** | Posits a targeted question to confirm complete comprehension. |
-
----
-
-## 📐 Architecture Overview
+## Interface flow
 
 ```mermaid
-graph TD
-    User([User Prompt]) -->|Streamlit UI| App[app.py]
-    App -->|Upload Document| RAG[agent/rag.py]
-    RAG -->|StateGraph| LangGraph[LangGraph Network]
-    LangGraph -->|Node A| A[Axiomatic Reduction]
-    LangGraph -->|Node B| B[Reassembly]
-    LangGraph -->|Node C| C[Simpler Terms]
-    LangGraph -->|Node D| D[Verification Check]
-    LangGraph -->|Retrieval| ChromaDB[(ChromaDB Store)]
-    LangGraph -->|LLM Calls| Cerebras[Cerebras Inference]
-    App -->|Display| UI[Streamlit Frontend]
+flowchart LR
+    U[PDF or TXT upload] --> UI[app.py: Streamlit interface]
+    Q[User question] --> UI
+    UI --> T[Temporary uploaded file]
+    T -. expected integration .-> R[agent.rag: setup_rag_pipeline]
+    R -. expected integration .-> STORE[agent.retriever_store]
+    UI -. expected integration .-> G[agent.graph: build_graph]
+    G -. expected integration .-> N[agent.nodes: extract_assistant_output]
+    N -. response .-> UI
 ```
 
----
+Dashed edges identify calls to the **missing project package**. They show the interfaces expected by `app.py`, not a verified backend architecture. The embedding model, vector-store lifetime, provider configuration, and internal graph nodes cannot be confirmed from this checkout.
 
-## 🛠️ Tech Stack Details
+## Intended teaching approach
 
-| Layer | Technology |
-| :--- | :--- |
-| **Agentic Framework** | LangGraph (StateGraph + MemorySaver) |
-| **LLM Provider** | Cerebras Inference (ultra-fast, dedicated hardware) |
-| **Embeddings** | HuggingFace `all-MiniLM-L6-v2` (local, no API cost) |
-| **Vector Store** | ChromaDB (in-memory, per-session) |
-| **UI** | Streamlit (premium dark glassmorphism theme) |
-| **Document Loaders** | PyPDF + LangChain TextLoader |
+The project's original documentation describes an ABCD explanation format:
 
----
+| Phase | Teaching goal |
+| --- | --- |
+| A — Axiomatic reduction | Identify foundational ideas |
+| B — Reassembly | Build the explanation from those foundations |
+| C — Simpler terms | Offer a relatable analogy |
+| D — Verification check | Ask a comprehension question |
 
-## 🚀 Interactive Installation & Setup
+Treat this as the intended product experience. The missing backend prevents verification of how these phases are implemented or whether difficulty requests change its behavior.
 
-<details>
-<summary>📋 Step 1: Clone Repository</summary>
+## Quickstart and current blocker
+
+### Prepare a checkout
+
+The original setup targets Python 3.10+. These commands reference files that are present:
 
 ```bash
 git clone https://github.com/MdSadman20040812/ProjectAegis.git
 cd ProjectAegis
+python -m venv venv
 ```
-</details>
 
-<details>
-<summary>🐍 Step 2: Create Virtual Environment</summary>
+Activate the environment using your shell:
+
+```bat
+:: Windows Command Prompt
+venv\Scripts\activate
+```
 
 ```bash
-python -m venv venv
-venv\Scripts\activate      # Windows
-# source venv/bin/activate  # macOS/Linux
+# macOS / Linux
+source venv/bin/activate
 ```
-</details>
 
-<details>
-<summary>📦 Step 3: Install Dependencies</summary>
+Install the declared dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
-</details>
 
-<details>
-<summary>🔑 Step 4: Configure Environment</summary>
+### Configure locally
 
-Copy `.env.example` to `.env` and fill in your key:
+[.env.example](.env.example) documents `CEREBRAS_API_KEY`. Create your own local `.env` from that template and supply a key only in your local environment—not in an issue, screenshot, or commit. `app.py` calls `load_dotenv()`; the missing backend's consumption of this setting cannot be verified.
 
-```bash
-copy .env.example .env
-```
+Do not rely on a repository-supplied `.env` or reuse any credential that may have been committed. Review secret handling and rotate any exposed key before deployment.
 
-Edit `.env`:
-```
-CEREBRAS_API_KEY=your_cerebras_api_key_here
-```
-</details>
+### Launch only after restoring the backend
 
-<details>
-<summary>▶️ Step 5: Run AEGIS</summary>
+Obtain the project's compatible `agent` package from the maintainer. The required module interfaces are listed in the diagram above; do not substitute an unrelated package with the same name.
+
+The existing launch command is:
 
 ```bash
 streamlit run app.py
 ```
 
-Then open your browser to: **http://localhost:8501**
-</details>
+`run.bat` is the Windows alternative and expects `venv\Scripts\activate.bat` beside the application. **Until the missing package is restored, an import failure is expected rather than a working tutor.** This documentation refresh did not launch the application or make an inference request.
 
----
+## Source map
 
-## 📖 Usage Guide
+| File | Purpose |
+| --- | --- |
+| [app.py](app.py) | Streamlit UI, upload handling, session state, and backend calls |
+| [requirements.txt](requirements.txt) | Declared LangChain/LangGraph, Streamlit, document, and embedding dependencies |
+| [.env.example](.env.example) | Local environment-variable template |
+| [run.bat](run.bat) | Windows launcher using the local `venv` |
+| [.devcontainer/devcontainer.json](.devcontainer/devcontainer.json) | Development-container configuration |
+| [.gitignore](.gitignore) | Repository ignore rules |
 
-1. **Launch** AEGIS via Streamlit
-2. **Upload** your document (PDF or TXT) using the sidebar panel
-3. **Ask** any question about the content in the chat input
-4. **Adjust difficulty** on the fly:
-   - Say `"simplify this"` or `"explain like I'm 5"` → removes jargon
-   - Say `"go deeper"` or `"more technical"` → introduces formal math/nomenclature
-5. **New Session** — click the reset button in the sidebar to clear memory and start fresh
+## Limitations
 
----
+- Backend code is missing. No end-to-end tutoring, retrieval quality, latency, or provider/model claim is established by this checkout.
+- Browser right-click and developer-key suppression is a UI behavior, **not a security boundary**. It does not protect source code, secrets, or uploaded documents.
+- Uploads are written with `delete=False` to temporary files; `app.py` does not show cleanup. The “New Session” action does not prove deletion of those files or backend data.
+- Document data flow to external services cannot be fully audited without the backend. Use non-sensitive samples until provider handling, retention, and access controls are reviewed.
+- Dependencies are unpinned, and no license file is present in the inspected repository tree.
 
-## 📄 License
+## Contribute
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-<div align="center">
-  <sub>Built with rigor. Deployed with evidence. • 2026</sub>
-</div>
+The highest-value contribution is a complete, secret-free backend with a reproducible installation path. Follow with an import smoke test, documented provider/model settings, temporary-file cleanup, and retrieval evaluations using public fixtures. Open an issue with the exact traceback and environment details; never include API keys or private source documents.
