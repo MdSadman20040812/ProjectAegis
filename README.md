@@ -1,83 +1,30 @@
-![Project Aegis](https://img.shields.io/badge/ProjectAegis-Cognitive%20Tutor-dc2626?style=for-the-badge)
-![LangGraph](https://img.shields.io/badge/LangGraph-0.2-1c1c1c?style=flat-square)
-![ChromaDB](https://img.shields.io/badge/ChromaDB-Latest-ff6f00?style=flat-square)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.30-ff4b4b?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+![Project Aegis — A cognitive-tutor interface for academic reading](docs/visuals/header.png)
 
-**Cognitive tutor — deconstruct academic documents into first principles via ABCD framework.**
+# Project Aegis
 
----
+A Streamlit interface intended for document-grounded tutoring. The checked-in app imports a separate agent package for its graph, retrieval pipeline and response extraction.
 
-## 🏗️ Pipeline
+**[Source guide](#source-guide)** · **[Getting started](#getting-started)** · **[Scope & limitations](#scope--limitations)**
 
-```mermaid
-graph LR
-    subgraph Input
-        DOC[Academic<br/>Document]
-        Q[Student<br/>Query]
-    end
-    subgraph LangGraph Pipeline
-        PARSE[Parse<br/>Structure]
-        DECONSTRUCT[Deconstruct<br/>ABCD Framework]
-        EXPLAIN[Explain<br/>First Principles]
-        VERIFY[Verify<br/>Understanding]
-    end
-    subgraph Storage
-        VDB[(ChromaDB<br/>Concept Vectors)]
-    end
-    subgraph Output
-        EXPLANATION[First-Principles<br/>Explanation]
-        QUIZ[Comprehension<br/>Check]
-    end
-    DOC --> PARSE
-    PARSE --> DECONSTRUCT
-    DECONSTRUCT --> EXPLAIN
-    Q --> EXPLAIN
-    EXPLAIN --> VDB
-    VDB --> VERIFY
-    VERIFY --> EXPLANATION
-    VERIFY --> QUIZ
-```
+## Source guide
+
+[![Repository components and their source paths](docs/visuals/repository-guide.png)](docs/visuals/repository-guide.png)
+
+| Component | Open source | Purpose |
+| :-- | :-- | :-- |
+| Streamlit UI | [`app.py`](app.py) | Document input and conversation interface. |
+| Dependencies | [`requirements.txt`](requirements.txt) | Streamlit and retrieval/agent libraries. |
+| Windows launcher | [`run.bat`](run.bat) | Local startup wrapper. |
+| Development setup | [`.devcontainer`](.devcontainer) | Development-container configuration. |
+
+## Getting started
+
+Use the linked source files and project documents above as the entry points. Review the prerequisites and limitations below before execution.
+
+## Scope & limitations
+
+Repository limitation: app.py imports agent.graph, agent.rag, agent.nodes and agent.retriever_store, but the agent/ package is absent from the current tree. Restore that implementation before treating the application as runnable. The source guide below is not a working-app screenshot.
 
 ---
 
-## ✨ Features
-
-- **ABCD framework** — Anchor-Bridge-Construct-Deconstruct methodology
-- **First-principles breakdown** — reduce complex topics to fundamentals
-- **Concept mapping** — visual graph of concept dependencies
-- **Comprehension check** — auto-generated quizzes from document content
-- **Streamlit UI** — interactive tutoring interface
-
----
-
-## 🚀 Quick Start
-
-```bash
-pip install -r requirements.txt
-streamlit run aegis/app.py
-```
-
----
-
-## 📁 Project Structure
-
-```
-ProjectAegis/
-├── aegis/
-│   ├── app.py             # Streamlit UI
-│   ├── graph.py           # LangGraph pipeline
-│   ├── parser.py          # Document structure parsing
-│   ├── deconstruct.py     # ABCD framework logic
-│   ├── explain.py         # First-principles explanation
-│   ├── quiz.py            # Comprehension verification
-│   └── store.py           # Vector persistence
-├── tests/
-└── README.md
-```
-
----
-
-## 📄 License
-
-MIT © Md Sadman Bin Masud
+[Visual asset sources and presentation notes](docs/visuals/README.md)
